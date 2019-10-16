@@ -1,4 +1,9 @@
 {
+	"dependencies": {
+		"react": "^16.10.2",
+		"react-dom": "^16.10.2",
+		"styled-components": "^4.4.0"
+	},
 	"devDependencies": {
 		"file-loader": "^4.2.0",
 		"html-minify-loader": "^1.4.0",
