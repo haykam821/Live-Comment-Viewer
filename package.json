@@ -1,4 +1,8 @@
 {
+	"name": "live-comment-viewer",
+	"description": "A live comment viewer for Reddit.",
+	"version": "1.0.0",
+	"main": "./src/index.jsx",
 	"dependencies": {
 		"react": "^16.10.2",
 		"react-dom": "^16.10.2",
@@ -39,5 +43,21 @@
 				"version": "detect"
 			}
 		}
-	}
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/haykam821/Live-Comment-Viewer.git"
+	},
+	"keywords": [
+		"reddit",
+		"live",
+		"websocket",
+		"comment"
+	],
+	"author": "haykam821",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/haykam821/Live-Comment-Viewer/issues"
+	},
+	"homepage": "https://github.com/haykam821/Live-Comment-Viewer#readme"
 }
