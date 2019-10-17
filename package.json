@@ -6,6 +6,15 @@
 		"styled-components": "^4.4.0"
 	},
 	"devDependencies": {
+		"babel-eslint": "^10.0.3",
+		"eslint": "^6.5.1",
+		"eslint-config-haykam": "^1.8.0",
+		"eslint-plugin-extra-rules": "0.0.0-development",
+		"eslint-plugin-html": "^6.0.0",
+		"eslint-plugin-json": "^1.4.0",
+		"eslint-plugin-markdown": "^1.0.0",
+		"eslint-plugin-react": "^7.16.0",
+		"eslint-plugin-unicorn": "^10.0.0",
 		"file-loader": "^4.2.0",
 		"html-minify-loader": "^1.4.0",
 		"jsx-loader": "^0.13.2",
@@ -13,6 +22,19 @@
 		"webpack-cli": "^3.3.9"
 	},
 	"scripts": {
-		"build": "webpack --config webpack.config.js"
+		"build": "webpack --config webpack.config.js",
+		"lint": "eslint \"./**/*.js\" \"./**/*.jsx\" --ignore-path .gitignore"
+	},
+	"eslintConfig": {
+		"extends": [
+			"eslint-config-haykam",
+			"plugin:react/recommended"
+		],
+		"parser": "babel-eslint",
+		"settings": {
+			"react": {
+				"version": "detect"
+			}
+		}
 	}
 }
