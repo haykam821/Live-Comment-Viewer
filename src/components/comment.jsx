@@ -11,7 +11,7 @@ const Comment = styled(class Comment extends React.Component {
 			<h3 title={date}>
 				{this.props.author}:
 			</h3>
-			<div dangerouslySetInnerHTML={{ __html: parser.render(this.props.body)}} />
+			<div dangerouslySetInnerHTML={{ __html: parser.render(this.props.body) }} />
 		</div>;
 	}
 })`

@@ -7,18 +7,18 @@ const Notice = require("./notice.jsx");
 const Comment = require("./comment.jsx");
 
 const connectionNotices = {
-	none: "Not connected to comment websocket.",
-	connecting: "Connecting to comment websocket...",
 	connected: "Connected to comment websocket!",
-}
+	connecting: "Connecting to comment websocket...",
+	none: "Not connected to comment websocket.",
+};
 
 const App = styled(class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			postID: "dgcgyo",
-			connectionState: "none",
 			comments: [],
+			connectionState: "none",
+			postID: "dgcgyo",
 		};
 
 		this.connectSocket = this.connectSocket.bind(this);
@@ -31,7 +31,6 @@ const App = styled(class App extends React.Component {
 	}
 
 	async connectSocket() {
-		console.log(this.state)
 		if (this.socket instanceof WebSocket) {
 			this.socket.close();
 		}
@@ -52,7 +51,6 @@ const App = styled(class App extends React.Component {
 	}
 
 	updatePost(postURL) {
-		console.log(postURL)
 		if (typeof postURL === "object") {
 			postURL = postURL.target.value;
 		}
@@ -74,7 +72,7 @@ const App = styled(class App extends React.Component {
 			</Section>
 			<Section title="Chat">
 				{this.state.comments.length === 0 ? <Notice>No chat messages yet...</Notice> : this.state.comments.map(comment => {
-					return <Comment key={comment.name} {...comment}>{comment.body}</Comment>
+					return <Comment key={comment.name} {...comment}>{comment.body}</Comment>;
 				})}
 			</Section>
 		</div>;
