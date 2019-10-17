@@ -9,6 +9,7 @@ const Comment = require("./comment.jsx");
 const connectionNotices = {
 	connected: "Connected to comment websocket!",
 	connecting: "Connecting to comment websocket...",
+	disconnected: "Disconnected from comment websocket.",
 	none: "Not connected to comment websocket.",
 };
 
@@ -35,7 +36,21 @@ const App = styled(class App extends React.Component {
 			this.socket.close();
 		}
 
+		this.setState({
+			connectionState: "connecting",
+		});
 		this.socket = new WebSocket(await this.getSocketURL());
+
+		this.socket.addEventListener("open", () => {
+			this.setState({
+				connectionState: "connected",
+			});
+		});
+		this.socket.addEventListener("close", () => {
+			this.setState({
+				connectionState: "disconnected",
+			});
+		});
 		this.socket.addEventListener("message", event => {
 			try {
 				const data = JSON.parse(event.data);
