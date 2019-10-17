@@ -1,18 +1,81 @@
 const React = require("react");
+React.__spread = Object.assign;
 const styled = require("styled-components").default;
 
 const Section = require("./section.jsx");
 const Notice = require("./notice.jsx");
+const Comment = require("./comment.jsx");
+
+const connectionNotices = {
+	none: "Not connected to comment websocket.",
+	connecting: "Connecting to comment websocket...",
+	connected: "Connected to comment websocket!",
+}
 
 const App = styled(class App extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			postID: "dgcgyo",
+			connectionState: "none",
+			comments: [],
+		};
+
+		this.connectSocket = this.connectSocket.bind(this);
+		this.updatePost = this.updatePost.bind(this);
+	}
+
+	async getSocketURL(id = this.state.postID) {
+		const response = await fetch("https://gateway.reddit.com/desktopapi/v1/postcomments/" + id).then(res => res.json());
+		return response.posts["t3_" + id].liveCommentsWebsocket;
+	}
+
+	async connectSocket() {
+		console.log(this.state)
+		if (this.socket instanceof WebSocket) {
+			this.socket.close();
+		}
+
+		this.socket = new WebSocket(await this.getSocketURL());
+		this.socket.addEventListener("message", event => {
+			try {
+				const data = JSON.parse(event.data);
+				if (data.type === "new_comment") {
+					this.setState({
+						comments: [data.payload].concat(this.state.comments),
+					});
+				}
+			} catch (error) {
+				console.log("Error when handling message:", error);
+			}
+		});
+	}
+
+	updatePost(postURL) {
+		console.log(postURL)
+		if (typeof postURL === "object") {
+			postURL = postURL.target.value;
+		}
+		if (typeof postURL !== "string") return;
+
+		this.setState({
+			// No URL parsing for now
+			postID: postURL,
+		});
+	}
+
 	render() {
 		return <div className={this.props.className}>
 			<h1>Live Comment Viewer</h1>
 			<Section title="Post">
-				<input placeholder="Post URL..." type="url"></input>
+				<input value={this.state.postID} placeholder="Post URL..." type="url" onChange={this.updatePost}></input>
+				<button onClick={this.connectSocket}>(Re)connect</button>
+				<Notice>{connectionNotices[this.state.connectionState] || "Unknown connection state"}</Notice>
 			</Section>
 			<Section title="Chat">
-				<Notice>No chat messages yet...</Notice>
+				{this.state.comments.length === 0 ? <Notice>No chat messages yet...</Notice> : this.state.comments.map(comment => {
+					return <Comment key={comment.name} {...comment}>{comment.body}</Comment>
+				})}
 			</Section>
 		</div>;
 	}
@@ -30,8 +93,9 @@ const App = styled(class App extends React.Component {
 
 	font-family: sans-serif;
 
-	h1, h2 {
+	h1, h2, h3 {
 		margin: 0;
+		margin-bottom: 0.3em;
 		font-weight: bold;
 	}
 

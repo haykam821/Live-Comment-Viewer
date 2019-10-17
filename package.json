@@ -2,6 +2,7 @@
 	"dependencies": {
 		"react": "^16.10.2",
 		"react-dom": "^16.10.2",
+		"snuownd": "^1.1.0",
 		"styled-components": "^4.4.0"
 	},
 	"devDependencies": {
