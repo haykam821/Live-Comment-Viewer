@@ -15,7 +15,11 @@ NoticeUnstyled.propTypes = {
 };
 
 const Notice = styled(NoticeUnstyled)`
-	color: #8e8e8e;
 	font-style: italic;
+
+	color: #565656;
+	@media (prefers-color-scheme: dark) {
+		color: #8e8e8e;
+	}
 `;
 module.exports = Notice;

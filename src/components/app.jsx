@@ -126,11 +126,16 @@ const App = styled(AppUnstyled)`
 	flex-direction: column;
 	align-items: center;
 
-	padding: 16px;
-	background: #333;
-	color: #ccc;
 
+	padding: 16px;
 	font-family: sans-serif;
+
+	background: #f3f3f3;
+	color: #2d2d2d;
+	@media (prefers-color-scheme: dark) {
+		background: #333;
+		color: #ccc;
+	}
 
 	h1, h2, h3 {
 		margin: 0;
@@ -140,16 +145,27 @@ const App = styled(AppUnstyled)`
 
 	input, button {
 		box-sizing: border-box;
-		background-color: #eee;
-		border: 1px solid #333;
+		border: 1px solid;
 		padding: 4px;
 		margin: 4px 0;
 		width: 50%;
 		border-radius: 8px;
+
+		background-color: #efefef;
+		border-color: #b1b1b1;
+		@media (prefers-color-scheme: dark) {
+			background-color: #eee;
+			border-color: #333;
+		}
 	}
 	button {
 		border-radius: 4px;
 		width: 45%;
+
+		color: #2f2f2f;
+		@media (prefers-color-scheme: dark) {
+			color: black;
+		}
 	}
 
 	p {

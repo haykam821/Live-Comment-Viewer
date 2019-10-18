@@ -21,9 +21,13 @@ const Section = styled(SectionUnstyled)`
 	max-width: 500px;
 	margin-top: 8px;
 
-	background: #555;
 	border-radius: 8px;
 	padding: 8px;
+
+	background: #cecece;
+	@media (prefers-color-scheme: dark) {
+		background: #555;
+	}
 
 	text-align: center;
 `;
