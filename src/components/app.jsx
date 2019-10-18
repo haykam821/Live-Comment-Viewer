@@ -1,6 +1,7 @@
 const React = require("react");
 React.__spread = Object.assign;
 const styled = require("styled-components").default;
+const propTypes = require("prop-types");
 
 const log = require("../debug.js");
 
@@ -15,7 +16,7 @@ const connectionNotices = {
 	none: "Not connected to comment websocket.",
 };
 
-const App = styled(class App extends React.Component {
+class AppUnstyled extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -112,7 +113,12 @@ const App = styled(class App extends React.Component {
 			</Section>
 		</div>;
 	}
-})`
+}
+AppUnstyled.propTypes = {
+	className: propTypes.string,
+};
+
+const App = styled(AppUnstyled)`
 	width: 100%;
 	height: 100%;
 

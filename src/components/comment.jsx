@@ -1,10 +1,11 @@
 const React = require("react");
 const styled = require("styled-components").default;
+const propTypes = require("prop-types");
 
 const snudown = require("snuownd");
 const parser = snudown.getParser();
 
-const Comment = styled(class Comment extends React.Component {
+class CommentUnstyled extends React.Component {
 	render() {
 		const date = new Date(this.props.full_date).toLocaleString();
 		return <div className={this.props.className}>
@@ -14,7 +15,16 @@ const Comment = styled(class Comment extends React.Component {
 			<div dangerouslySetInnerHTML={{ __html: parser.render(this.props.body) }} />
 		</div>;
 	}
-})`
+}
+CommentUnstyled.propTypes = {
+	author: propTypes.string,
+	body: propTypes.string,
+	className: propTypes.string,
+	/* eslint-disable-next-line camelcase */
+	full_date: propTypes.string,
+};
+
+const Comment = styled(CommentUnstyled)`
 	text-align: left;
 	background: rgba(0, 0, 0, 0.1);
 	padding: 8px;
