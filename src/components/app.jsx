@@ -2,6 +2,8 @@ const React = require("react");
 React.__spread = Object.assign;
 const styled = require("styled-components").default;
 
+const log = require("../debug.js");
+
 const Section = require("./section.jsx");
 const Notice = require("./notice.jsx");
 const Comment = require("./comment.jsx");
@@ -34,39 +36,49 @@ const App = styled(class App extends React.Component {
 
 	async getSocketURL(id = this.state.postID) {
 		const response = await fetch("https://gateway.reddit.com/desktopapi/v1/postcomments/" + id).then(res => res.json());
-		return response.posts["t3_" + id].liveCommentsWebsocket;
+		const url = response.posts["t3_" + id].liveCommentsWebsocket;
+
+		log("got websocket URL: %s", url);
+		return url;
 	}
 
 	async connectSocket() {
 		if (this.socket instanceof WebSocket) {
 			this.socket.close();
+			log("closing previously opened socket");
 		}
 
 		this.setState({
 			connectionState: "connecting",
 		});
 		this.socket = new WebSocket(await this.getSocketURL());
+		log("opening new socket");
 
 		this.socket.addEventListener("open", () => {
 			this.setState({
 				connectionState: "connected",
 			});
+			log("opened new socket");
 		});
 		this.socket.addEventListener("close", () => {
 			this.setState({
 				connectionState: "disconnected",
 			});
+			log("socket closed");
 		});
 		this.socket.addEventListener("message", event => {
 			try {
 				const data = JSON.parse(event.data);
 				if (data.type === "new_comment") {
+					log("recieved new message");
 					this.setState({
 						comments: [data.payload].concat(this.state.comments),
 					});
+				} else {
+					log("recieved message of type '%s'", data.type);
 				}
 			} catch (error) {
-				console.log("Error when handling message:", error);
+				log("error when handling message:", error);
 			}
 		});
 	}
@@ -77,6 +89,7 @@ const App = styled(class App extends React.Component {
 		}
 		if (typeof postURL !== "string") return;
 
+		log("updated post ID to '%s'", postURL);
 		this.setState({
 			// No URL parsing for now
 			postID: postURL,
@@ -87,7 +100,7 @@ const App = styled(class App extends React.Component {
 		return <div className={this.props.className}>
 			<h1>Live Comment Viewer</h1>
 			<Section title="Post">
-				<input value={this.state.postID} placeholder="Post URL..." type="url" onChange={this.updatePost}></input>
+				<input value={this.state.postID || ""} placeholder="Post URL..." type="url" onChange={this.updatePost}></input>
 				<button onClick={this.connectSocket}>(Re)connect</button>
 				<Notice>{connectionNotices[this.state.connectionState] || "Unknown connection state"}</Notice>
 			</Section>
