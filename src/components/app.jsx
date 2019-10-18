@@ -19,11 +19,17 @@ const App = styled(class App extends React.Component {
 		this.state = {
 			comments: [],
 			connectionState: "none",
-			postID: "dgcgyo",
+			postID: new URLSearchParams(location.search).get("id"),
 		};
 
 		this.connectSocket = this.connectSocket.bind(this);
 		this.updatePost = this.updatePost.bind(this);
+	}
+
+	componentDidMount() {
+		if (this.state.postID !== null) {
+			this.connectSocket();
+		}
 	}
 
 	async getSocketURL(id = this.state.postID) {
