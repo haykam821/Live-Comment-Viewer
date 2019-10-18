@@ -100,7 +100,8 @@ const App = styled(class App extends React.Component {
 		return <div className={this.props.className}>
 			<h1>Live Comment Viewer</h1>
 			<Section title="Post">
-				<input value={this.state.postID || ""} placeholder="Post URL..." type="url" onChange={this.updatePost}></input>
+				<input value={this.state.postID || ""} placeholder="Post URL..." type="url" onChange={this.updatePost} />
+				<br />
 				<button onClick={this.connectSocket}>(Re)connect</button>
 				<Notice>{connectionNotices[this.state.connectionState] || "Unknown connection state"}</Notice>
 			</Section>
@@ -131,14 +132,18 @@ const App = styled(class App extends React.Component {
 		font-weight: bold;
 	}
 
-	input {
+	input, button {
 		box-sizing: border-box;
 		background-color: #eee;
 		border: 1px solid #333;
 		padding: 4px;
-		margin: 8px 0;
+		margin: 4px 0;
 		width: 50%;
 		border-radius: 8px;
+	}
+	button {
+		border-radius: 4px;
+		width: 45%;
 	}
 
 	p {
