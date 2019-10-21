@@ -16,6 +16,8 @@ const connectionNotices = {
 	none: "Not connected to comment websocket.",
 };
 
+const { homepage } = require("../../package.json");
+
 class AppUnstyled extends React.Component {
 	constructor(props) {
 		super(props);
@@ -99,7 +101,9 @@ class AppUnstyled extends React.Component {
 
 	render() {
 		return <div className={this.props.className}>
-			<h1>Live Comment Viewer</h1>
+			<h1>
+				<a href={homepage}>Live Comment Viewer</a>
+			</h1>
 			<Section title="Post">
 				<input value={this.state.postID || ""} placeholder="Post URL..." type="url" onChange={this.updatePost} />
 				<br />
@@ -141,6 +145,15 @@ const App = styled(AppUnstyled)`
 		margin: 0;
 		margin-bottom: 0.3em;
 		font-weight: bold;
+	}
+	h1 > a {
+		color: inherit;
+		text-decoration: none;
+
+		transition: 0.5s filter;
+		&:hover {
+			filter: invert(0.3);
+		}
 	}
 
 	input, button {
