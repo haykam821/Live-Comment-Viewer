@@ -1,4 +1,5 @@
 const path = require("path");
+const { EnvironmentPlugin } = require("webpack");
 
 module.exports = {
 	entry: "./src/index.jsx",
@@ -13,4 +14,9 @@ module.exports = {
 		filename: "index.js",
 		path: path.resolve(__dirname, "./dist"),
 	},
+	plugins: [
+		new EnvironmentPlugin({
+			USE_PROXY: process.env.WEBPACK_MODE !== "development",
+		}),
+	],
 };

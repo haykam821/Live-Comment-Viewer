@@ -38,11 +38,14 @@ class AppUnstyled extends React.Component {
 	}
 
 	async getSocketURL(id = this.state.postID) {
-		const response = await fetch("https://gateway.reddit.com/desktopapi/v1/postcomments/" + id).then(res => res.json());
-		const url = response.posts["t3_" + id].liveCommentsWebsocket;
+		const url = "https://gateway.reddit.com/desktopapi/v1/postcomments/" + id;
+		const proxyURL = process.env.USE_PROXY ? "https://cors-anywhere.herokuapp.com/" + url : url;
 
-		log("got websocket URL: %s", url);
-		return url;
+		const response = await fetch(proxyURL).then(res => res.json());
+		const socketURL = response.posts["t3_" + id].liveCommentsWebsocket;
+
+		log("got websocket URL: %s", socketURL);
+		return socketURL;
 	}
 
 	async connectSocket() {
