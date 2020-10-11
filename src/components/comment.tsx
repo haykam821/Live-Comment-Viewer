@@ -1,11 +1,28 @@
-const React = require("react");
-const styled = require("styled-components").default;
-const propTypes = require("prop-types");
+import React from "react";
+import propTypes from "prop-types";
+import snudown from "snuownd";
+import styled from "styled-components";
 
-const snudown = require("snuownd");
 const parser = snudown.getParser();
 
-class CommentUnstyled extends React.Component {
+
+interface CommentProps {
+	author: string;
+	body: string;
+	className?: string;
+	/* eslint-disable-next-line camelcase */
+	full_date: string;
+}
+
+class CommentUnstyled extends React.Component<CommentProps> {
+	public static readonly propTypes = {
+		author: propTypes.string,
+		body: propTypes.string,
+		className: propTypes.string,
+		/* eslint-disable-next-line camelcase */
+		full_date: propTypes.string,
+	};
+
 	render() {
 		const date = new Date(this.props.full_date).toLocaleString();
 		return <div className={this.props.className}>
@@ -16,13 +33,6 @@ class CommentUnstyled extends React.Component {
 		</div>;
 	}
 }
-CommentUnstyled.propTypes = {
-	author: propTypes.string,
-	body: propTypes.string,
-	className: propTypes.string,
-	/* eslint-disable-next-line camelcase */
-	full_date: propTypes.string,
-};
 
 const Comment = styled(CommentUnstyled)`
 	text-align: left;
@@ -40,4 +50,4 @@ const Comment = styled(CommentUnstyled)`
 		padding: 4px 8px;
 	}
 `;
-module.exports = Comment;
+export default Comment;

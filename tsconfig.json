@@ -1,0 +1,29 @@
+{
+	"compilerOptions": {
+		"allowJs": true,
+		"downlevelIteration": true,
+		"esModuleInterop": true,
+		"jsx": "react",
+		"lib": [
+			"es2020",
+			"dom"
+		],
+		"module": "es2020",
+		"moduleResolution": "node",
+		"noImplicitAny": true,
+		"outDir": "./dist",
+		"resolveJsonModule": true,
+		"target": "es5",
+		"typeRoots": [
+			"./typings"
+		],
+		"types": [
+			"debug",
+			"prop-types",
+			"react",
+			"react-dom",
+			"styled-components",
+			"webpack-env"
+		]
+	}
+}

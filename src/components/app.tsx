@@ -1,25 +1,47 @@
-const React = require("react");
-React.__spread = Object.assign;
-const styled = require("styled-components").default;
-const propTypes = require("prop-types");
+import React, { ChangeEvent } from "react";
 
-const log = require("../debug.js");
+import Comment from "./comment";
+import Notice from "./notice";
+import Section from "./section";
+import { homepage } from "../../package.json";
+import log from "../debug";
+import propTypes from "prop-types";
+import styled from "styled-components";
 
-const Section = require("./section.jsx");
-const Notice = require("./notice.jsx");
-const Comment = require("./comment.jsx");
-
-const connectionNotices = {
+const connectionNotices: Record<string, string> = {
 	connected: "Connected to comment websocket!",
 	connecting: "Connecting to comment websocket...",
 	disconnected: "Disconnected from comment websocket.",
 	none: "Not connected to comment websocket.",
 };
 
-const { homepage } = require("../../package.json");
 
-class AppUnstyled extends React.Component {
-	constructor(props) {
+interface Comment {
+	author: string;
+	body: string;
+	/* eslint-disable-next-line camelcase */
+	full_date: string;
+	name: string;
+}
+
+interface AppProps {
+	className?: string;
+}
+
+interface AppState {
+	comments: Comment[];
+	connectionState: string;
+	postID?: string;
+}
+
+class AppUnstyled extends React.Component<AppProps, AppState> {
+	public static readonly propTypes = {
+		className: propTypes.string,
+	};
+
+	private socket?: WebSocket;
+
+	constructor(props: Readonly<AppProps>) {
 		super(props);
 		this.state = {
 			comments: [],
@@ -89,9 +111,9 @@ class AppUnstyled extends React.Component {
 		});
 	}
 
-	updatePost(postURL) {
+	updatePost(postURL: ChangeEvent | string) {
 		if (typeof postURL === "object") {
-			postURL = postURL.target.value;
+			postURL = (postURL.target as HTMLInputElement).value;
 		}
 		if (typeof postURL !== "string") return;
 
@@ -115,15 +137,12 @@ class AppUnstyled extends React.Component {
 			</Section>
 			<Section title="Chat">
 				{this.state.comments.length === 0 ? <Notice>No chat messages yet...</Notice> : this.state.comments.map(comment => {
-					return <Comment key={comment.name} {...comment}>{comment.body}</Comment>;
+					return <Comment key={comment.name} author={comment.author} body={comment.body} full_date={comment.full_date} >{comment.body}</Comment>;
 				})}
 			</Section>
 		</div>;
 	}
 }
-AppUnstyled.propTypes = {
-	className: propTypes.string,
-};
 
 const App = styled(AppUnstyled)`
 	width: 100%;
@@ -188,4 +207,4 @@ const App = styled(AppUnstyled)`
 		margin: 6px 0;
 	}
 `;
-module.exports = App;
+export default App;
