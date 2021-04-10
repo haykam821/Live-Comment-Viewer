@@ -100,7 +100,10 @@ class AppUnstyled extends React.Component<AppProps, AppState> {
 				if (data.type === "new_comment") {
 					log("recieved new message");
 					this.setState({
-						comments: [data.payload].concat(this.state.comments),
+						comments: [
+							data.payload,
+							...this.state.comments,
+						],
 					});
 				} else {
 					log("recieved message of type '%s'", data.type);
