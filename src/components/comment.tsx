@@ -29,7 +29,9 @@ class CommentUnstyled extends React.Component<CommentProps> {
 			<h3 title={date}>
 				{this.props.author}:
 			</h3>
-			<div dangerouslySetInnerHTML={{ __html: parser.render(this.props.body) }} />
+			<div dangerouslySetInnerHTML={{
+				__html: parser.render(this.props.body),
+			}} />
 		</div>;
 	}
 }
